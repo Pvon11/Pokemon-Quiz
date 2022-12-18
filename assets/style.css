@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: darkgreen;
+}
+
+.start-btn,
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hide {
+  display: none;
+}
+
+.start-btn button {
+  font-size: 25px;
+  font-weight: 500;
+  color: darkgreen;
+  padding: 15px 30px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+}
+
+.container {
+  width: 540px;
+  background: white;
+  border-radius: 5px;
+}
+
+.container .info-title {
+  height: 60 px;
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  padding: 0 35px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.container .info-list {
+  padding: 15px 35px;
+}
+
+.container .info-list .info {
+  margin: 5px 0;
+  font-size: 17px;
+}
+
+.container .info-list .info span {
+  font-weight: 600;
+  color: darkred;
+}
+
+.container .buttons {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 35px;
+  border-top: 1px solid lightgray;
+}
+
+.container .buttons button {
+  margin: 0 5px;
+  height: 40px;
+  width: 100px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.answers-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.answer {
+  width: 50%;
+  text-align: center;
+}
+
+.buttons button.continue {
+  color: white;
+  background: darkgreen;
+}
+.buttons button.continue:hover {
+  background: darkgreen;
+}
+
+.buttons button.quit {
+  color: darkgreen;
+  border-color: darkgreen;
+}
