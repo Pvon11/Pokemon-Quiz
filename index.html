@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
     <div class="start-btn" id="start-btn"><button>Start Quiz</button></div>
 
     <div class="container hide" id="info-box">
@@ -19,7 +20,7 @@
             <span>Rules for the Quiz</span>
         </div>
         <div class="info-list">
-            <div class="info">1. You only have <span>15 seconds</span> per each question.</div>
+            <div class="info">1. You only have <span>60 Seconds</span> per question.</div>
             <div class="info">2. Once you select your answer, you cannot reselect.</div>
             <div class="info">3. You can't select any option once the time goes off.</div>
             <div class="info">4. You can't exit from the Quiz while you are playing. </div>
@@ -34,9 +35,12 @@
 
     <div class="container question-container  hide" id="question-container">
         <h1 id="question"></h1>
+        <div id="timer-text">Timer</div>
+        <div id="time-count"></div>
         <div class="answers-container" id="answers-container">
 
         </div>
+        <h2 id="timer"></h2>
     </div>
 
     <script src="./assets/script.js"></script>

@@ -104,10 +104,16 @@ body {
   background: darkgreen;
 }
 .buttons button.continue:hover {
-  background: darkgreen;
+  color: darkgreen;
+  background: lightgreen;
 }
 
 .buttons button.quit {
   color: darkgreen;
   border-color: darkgreen;
+}
+
+.buttons button.quit:hover {
+  color: white;
+  background: red;
 }

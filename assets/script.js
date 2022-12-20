@@ -2,10 +2,16 @@ var startButton = document.getElementById("start-btn");
 var continueButton = document.getElementById("continue");
 var infoBox = document.getElementById("info-box");
 var questionContainer = document.getElementById("question-container");
+var resultBox = document.getElementById("");
 var questionHeader = document.getElementById("question");
 var answersContainer = document.getElementById("answers-container");
+var timeCount = document.getElementById("time-count");
 
 var questionIndex = 0;
+
+var count = 60;
+
+var interval;
 
 var questions = [
   {
@@ -14,31 +20,35 @@ var questions = [
     correctAnswer: 1,
   },
   {
-    question: "Question 2",
-    answers: ["answer 2-1", "answer 2-2", "answer 2-3", "answer 2-4"],
+    question: "The psychic type is supper effective aginst which type",
+    answers: ["Normal", "Fairy", "Fighting", "Flying"],
+    correctAnswer: 2,
+  },
+  {
+    question: "How many gym badges do you need to challenge the Elite Four",
+    answers: ["100", "4", "25", "8"],
     correctAnswer: 3,
   },
   {
-    question: "Question 2",
-    answers: ["answer 3-1", "answer 2-2", "answer 2-3", "answer 2-4"],
-    correctAnswer: 3,
+    question: "Charmleon evolves into which Pokemon",
+    answers: ["Blastoise", "Mewtwo", "Charizard", "Marowak"],
+    correctAnswer: 2,
   },
   {
-    question: "Question 2",
-    answers: ["answer 4-1", "answer 2-2", "answer 2-3", "answer 2-4"],
-    correctAnswer: 3,
-  },
-  {
-    question: "Question 2",
-    answers: ["answer 5-1", "answer 2-2", "answer 2-3", "answer 2-4"],
-    correctAnswer: 3,
-  },
-  {
-    question: "Question 2",
-    answers: ["answer 6-1", "answer 2-2", "answer 2-3", "answer 2-4"],
-    correctAnswer: 3,
+    question: "What is Eevee's evolution if you give it a water stone",
+    answers: ["Vaporeon", "Jolteon", "Flareon", "Umbreon"],
+    correctAnswer: 0,
   },
 ];
+
+var timer = function () {
+  count--;
+  timeCount.textContent = count;
+  if (count === 0) {
+    clearInterval(interval);
+    alert("You're out of time!");
+  }
+};
 
 var renderQuestions = function () {
   if (questionIndex >= questions.length) {
@@ -76,6 +86,7 @@ var isAnswerCorrect = function (correctAnswer, answer) {
 };
 
 var endQuiz = function () {
+  clearInterval(interval);
   console.log("End of quiz");
 };
 
@@ -89,4 +100,7 @@ continueButton.addEventListener("click", function () {
   infoBox.classList.add("hide");
   questionContainer.classList.remove("hide");
   renderQuestions();
+  // startTimer(60);
+
+  interval = setInterval(timer, 1000);
 });
