@@ -6,4 +6,8 @@ My task this week 4 assingment was to create a quiz using a timer. It has event 
 
 ## Screenshot
 
+![computer](assets/pvon11.github.io.png)
+
 ## Website
+
+[Live Link](https://pvon11.github.io/Pokemon-Quiz/)
