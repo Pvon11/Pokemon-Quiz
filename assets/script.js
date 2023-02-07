@@ -2,10 +2,14 @@ var startButton = document.getElementById("start-btn");
 var continueButton = document.getElementById("continue");
 var infoBox = document.getElementById("info-box");
 var questionContainer = document.getElementById("question-container");
-var resultBox = document.getElementById("");
+var resultBox = document.getElementById("result-container");
 var questionHeader = document.getElementById("question");
 var answersContainer = document.getElementById("answers-container");
 var timeCount = document.getElementById("time-count");
+var username = document.getElementById("username");
+var saveButton = document.getElementById("saveScoreBtn");
+var quitButton = document.getElementById("quit");
+var restartButton = document.getElementById("restart");
 
 var questionIndex = 0;
 
@@ -47,6 +51,7 @@ var timer = function () {
   if (count === 0) {
     clearInterval(interval);
     alert("You're out of time!");
+    endQuiz();
   }
 };
 
@@ -58,9 +63,11 @@ var renderQuestions = function () {
     endQuiz();
     return;
   }
-
   questionHeader.innerText = questions[questionIndex].question;
   var answersArray = questions[questionIndex].answers;
+  if (answersArray.length > 4) {
+    answersArray = answersArray.slice(0, 4);
+  }
 
   for (let index = 0; index < answersArray.length; index++) {
     var answerButton = document.createElement("button");
@@ -81,12 +88,16 @@ var isAnswerCorrect = function (correctAnswer, answer) {
     answersContainer.innerHTML = "";
     renderQuestions();
   } else {
+    count -= 5;
     console.log("wrong!");
   }
 };
 
 var endQuiz = function () {
   clearInterval(interval);
+  questionContainer.classList.add("hide");
+  resultBox.classList.remove("hide");
+
   console.log("End of quiz");
 };
 
@@ -103,4 +114,17 @@ continueButton.addEventListener("click", function () {
   // startTimer(60);
 
   interval = setInterval(timer, 1000);
+});
+
+saveButton.addEventListener("click", function () {
+  localStorage.setItem(document.getElementById("username").value, count);
+});
+
+restartButton.addEventListener("click", function () {
+  resultBox.classList.add("hide");
+  questionIndex = 0;
+  infoBox.classList.remove("hide");
+  // renderQuestions();
+  localStorage.setItem("whatev", "whatev");
+  localStorage.removeItem("whatev");
 });

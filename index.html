@@ -28,7 +28,6 @@
         </div>
 
         <div class="buttons">
-            <button class="quit">Exit Quiz</button>
             <button class="continue" id="continue">Continue</button>
         </div>
     </div>
@@ -43,7 +42,24 @@
         <h2 id="timer"></h2>
     </div>
 
-    <script src="./assets/script.js"></script>
+    <div class="container hide" id="result-container">
+        <div class="complete-text">You have finished the Quiz!</div>
+        <div class="score-text">
+
+        </div>
+        <form>
+            <input type="text" name="username" id="username" placeholder="username" />
+            <button type="submit" class="btn" id="saveScoreBtn" onclick="saveHighScroe(event)">
+                Save
+            </button>
+        </form>
+        <div class="buttons">
+            <button id="restart" class="restart">Replay Quiz</button>
+            <button id="quit">Quit Quiz</button>
+
+        </div>
+
+        <script src="./assets/script.js"></script>
 </body>
 
 </html>
