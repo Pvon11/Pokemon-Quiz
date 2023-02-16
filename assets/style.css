@@ -80,7 +80,7 @@ body {
   width: 100px;
   border: 1px solid transparent;
   border-radius: 5px;
-  color: white;
+  color: green;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -117,4 +117,39 @@ body {
 .buttons button.quit:hover {
   color: white;
   background: red;
+}
+
+#saveScoreBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+#username {
+  font-size: larger;
+}
+
+.complete-text {
+  font-size: xx-large;
+}
+
+#timer-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+#time-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  font-size: large;
+}
+#answers-container {
+  font-size: x-large;
 }

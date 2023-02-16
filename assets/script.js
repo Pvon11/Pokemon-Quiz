@@ -57,9 +57,7 @@ var timer = function () {
 
 var renderQuestions = function () {
   if (questionIndex >= questions.length) {
-    // you will want to handle your end fo quiz functionality ie
-    // saving the score in the LS and giving the user the chance
-    // to redo the game or simply check the highscores and also ending the timer
+    
     endQuiz();
     return;
   }
@@ -124,7 +122,6 @@ restartButton.addEventListener("click", function () {
   resultBox.classList.add("hide");
   questionIndex = 0;
   infoBox.classList.remove("hide");
-  // renderQuestions();
   localStorage.setItem("whatev", "whatev");
   localStorage.removeItem("whatev");
 });
