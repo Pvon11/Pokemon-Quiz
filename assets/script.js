@@ -3,52 +3,143 @@ var continueButton = document.getElementById("continue");
 var infoBox = document.getElementById("info-box");
 var questionContainer = document.getElementById("question-container");
 var resultBox = document.getElementById("result-container");
+var questionImage = document.getElementById("question-image");
 var questionHeader = document.getElementById("question");
 var answersContainer = document.getElementById("answers-container");
 var timeCount = document.getElementById("time-count");
 var username = document.getElementById("username");
 var saveButton = document.getElementById("saveScoreBtn");
-var quitButton = document.getElementById("quit");
 var restartButton = document.getElementById("restart");
 
 var questionIndex = 0;
-
 var count = 60;
-
 var interval;
+var questions = [];
 
-var questions = [
-  {
-    question: "What type is the pokemon dugtrio",
-    answers: ["Fire", "Ground", "Water", "Steel"],
-    correctAnswer: 1,
-  },
-  {
-    question: "The psychic type is supper effective aginst which type",
-    answers: ["Normal", "Fairy", "Fighting", "Flying"],
-    correctAnswer: 2,
-  },
-  {
-    question: "How many gym badges do you need to challenge the Elite Four",
-    answers: ["100", "4", "25", "8"],
-    correctAnswer: 3,
-  },
-  {
-    question: "Charmleon evolves into which Pokemon",
-    answers: ["Blastoise", "Mewtwo", "Charizard", "Marowak"],
-    correctAnswer: 2,
-  },
-  {
-    question: "What is Eevee's evolution if you give it a water stone",
-    answers: ["Vaporeon", "Jolteon", "Flareon", "Umbreon"],
-    correctAnswer: 0,
-  },
-];
+// Fisher-Yates algorithm that works
+function shuffleArray(array) {
+  var currentIndex = array.length;
+  var temporaryValue, randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+var fetchQuestions = function () {
+  // limit 898 = all pokes up to Gen 1-8,
+  fetch("https://pokeapi.co/api/v2/pokemon?limit=898")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var allPokemon = data.results;
+
+      var selectedPokemonIndexes = getRandomIndexes(allPokemon.length, 20);
+
+      var pokemonPromises = selectedPokemonIndexes.map(function (index) {
+        var pokemon = allPokemon[index];
+        return fetch(pokemon.url).then(function (response) {
+          return response.json();
+        });
+      });
+
+      Promise.all(pokemonPromises)
+        .then(function (pokemonDataArray) {
+          pokemonDataArray.forEach(function (pokemonData) {
+            var question = {
+              question: "Who's That Pokémon?",
+              image: pokemonData.sprites.front_default,
+              options: [],
+              correctAnswer: 0,
+            };
+
+            question.options.push(pokemonData.name);
+
+            var allPokemonNames = allPokemon
+              .filter(function (pokemon, index) {
+                return selectedPokemonIndexes.includes(index);
+              })
+              .map(function (p) {
+                return p.name;
+              });
+
+            allPokemonNames.splice(
+              allPokemonNames.indexOf(pokemonData.name),
+              1
+            );
+
+            for (var i = 0; i < 3; i++) {
+              var randomIndex = Math.floor(
+                Math.random() * allPokemonNames.length
+              );
+              question.options.push(allPokemonNames[randomIndex]);
+              allPokemonNames.splice(randomIndex, 1);
+            }
+
+            question.options = shuffleArray(question.options);
+            question.correctAnswer = question.options.indexOf(pokemonData.name);
+
+            questions.push(question);
+
+            if (questions.length === pokemonDataArray.length) {
+              startQuiz();
+            }
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+// Function to get unique random indexes
+function getRandomIndexes(maxIndex, count) {
+  var indexes = [];
+  for (var i = 0; i < count; i++) {
+    var randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * maxIndex);
+    } while (indexes.includes(randomIndex));
+    indexes.push(randomIndex);
+  }
+  return indexes;
+}
+
+// Function to get random elements from an array
+function getRandomElements(array, count) {
+  var shuffled = array.slice();
+  var random = [];
+  var index = -1;
+
+  while (random.length < count && ++index < shuffled.length) {
+    var rand = Math.floor(Math.random() * (index + 1));
+    if (rand !== index) {
+      random.push(random[rand]);
+      random[rand] = shuffled[index];
+    } else {
+      random.push(shuffled[index]);
+    }
+  }
+
+  return random.slice(0, count);
+}
 
 var timer = function () {
   count--;
   timeCount.textContent = count;
-  if (count === 0) {
+  if (count <= 0) {
+    // Update the condition to check if count is less than or equal to 0
     clearInterval(interval);
     alert("You're out of time!");
     endQuiz();
@@ -57,19 +148,25 @@ var timer = function () {
 
 var renderQuestions = function () {
   if (questionIndex >= questions.length) {
-    
     endQuiz();
     return;
   }
   questionHeader.innerText = questions[questionIndex].question;
-  var answersArray = questions[questionIndex].answers;
-  if (answersArray.length > 4) {
-    answersArray = answersArray.slice(0, 4);
-  }
 
-  for (let index = 0; index < answersArray.length; index++) {
+  var image = new Image();
+  image.src = questions[questionIndex].image;
+  image.onload = function () {
+    questionImage.innerHTML = "";
+    questionImage.appendChild(image);
+  };
+
+  var optionsArray = questions[questionIndex].options;
+
+  answersContainer.innerHTML = "";
+
+  for (let index = 0; index < optionsArray.length; index++) {
     var answerButton = document.createElement("button");
-    answerButton.innerText = answersArray[index];
+    answerButton.innerText = optionsArray[index];
     answerButton.classList.add("answer");
 
     answersContainer.appendChild(answerButton);
@@ -80,48 +177,61 @@ var renderQuestions = function () {
   }
 };
 
-var isAnswerCorrect = function (correctAnswer, answer) {
+// Check if the answer is correct
+function isAnswerCorrect(correctAnswer, answer) {
   if (answer === correctAnswer) {
     questionIndex++;
-    answersContainer.innerHTML = "";
     renderQuestions();
+    // Show thumbs up emoji for correct answer
+    var emojiElement = document.createElement("span");
+    emojiElement.innerHTML = "&#128077;"; // thumbs up emoji
+    emojiElement.classList.add("emoji");
+    timeCount.insertAdjacentElement("afterend", emojiElement);
   } else {
     count -= 5;
-    console.log("wrong!");
+    console.log("Wrong answer!");
+    // Show -5 for wrong answer
+    var penaltyElement = document.createElement("span");
+    penaltyElement.textContent = "-5";
+    penaltyElement.classList.add("penalty");
+    timeCount.insertAdjacentElement("afterend", penaltyElement);
   }
-};
+}
 
 var endQuiz = function () {
   clearInterval(interval);
   questionContainer.classList.add("hide");
   resultBox.classList.remove("hide");
-
   console.log("End of quiz");
 };
 
-// event listeners should be at the bottom
+var startQuiz = function () {
+  infoBox.classList.add("hide");
+  questionContainer.classList.remove("hide");
+  renderQuestions();
+  interval = setInterval(timer, 1000);
+};
+
 startButton.addEventListener("click", function () {
   startButton.classList.add("hide");
-  infoBox.classList.remove("hide");
+  fetchQuestions();
 });
 
 continueButton.addEventListener("click", function () {
   infoBox.classList.add("hide");
   questionContainer.classList.remove("hide");
   renderQuestions();
-  // startTimer(60);
-
   interval = setInterval(timer, 1000);
 });
 
-saveButton.addEventListener("click", function () {
-  localStorage.setItem(document.getElementById("username").value, count);
+saveButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  localStorage.setItem(username.value, count);
 });
 
 restartButton.addEventListener("click", function () {
   resultBox.classList.add("hide");
   questionIndex = 0;
   infoBox.classList.remove("hide");
-  localStorage.setItem("whatev", "whatev");
   localStorage.removeItem("whatev");
 });

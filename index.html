@@ -7,13 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemon-Quiz</title>
     <link rel="stylesheet" href="./assets/style.css">
-
-
 </head>
 
 <body>
-
-    <div class="start-btn" id="start-btn"><button>Start Quiz</button></div>
+    <div class="start-btn" id="start-btn">
+        <button>Start Quiz</button>
+    </div>
 
     <div class="container hide" id="info-box">
         <div class="info-title">
@@ -23,9 +22,9 @@
             <div class="info">1. You only have <span>60 Seconds</span> per question.</div>
             <div class="info">2. Each wrong answer subtracts five seconds from your remaining time.</div>
             <div class="info">3. An alert will notify you if you ran out of time.</div>
-            <div class="info">4. You can't exit from the Quiz while you are playing. </div>
+            <div class="info">4. You can't exit from the Quiz while you are playing.</div>
             <div class="info">5. Save your score and get the fastest time.</div>
-            <div class="info">6. input a username and check local storage!</div>
+            <div class="info">6. Input a username and check local storage!</div>
         </div>
 
         <div class="buttons">
@@ -33,34 +32,28 @@
         </div>
     </div>
 
-    <div class="container question-container  hide" id="question-container">
+    <div class="container question-container hide" id="question-container">
         <h1 id="question"></h1>
+        <div id="question-image"></div>
         <div id="timer-text">Timer</div>
         <div id="time-count"></div>
-        <div class="answers-container" id="answers-container">
-
-        </div>
+        <div class="answers-container" id="answers-container"></div>
         <h2 id="timer"></h2>
     </div>
 
     <div class="container hide" id="result-container">
         <div class="complete-text">You have finished the Quiz!</div>
-        <div class="score-text">
-
-        </div>
+        <div class="score-text"></div>
         <form>
             <input type="text" name="username" id="username" placeholder="username" />
-            <button type="submit" class="btn" id="saveScoreBtn" onclick="saveHighScroe(event)">
-                Save
-            </button>
+            <button type="submit" class="btn" id="saveScoreBtn">Save</button>
         </form>
         <div class="buttons">
             <button id="restart" class="restart">Replay Quiz</button>
-
-
         </div>
+    </div>
 
-        <script src="./assets/script.js"></script>
+    <script src="./assets/script.js"></script>
 </body>
 
 </html>

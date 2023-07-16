@@ -33,36 +33,39 @@ body {
   background: white;
   cursor: pointer;
 }
-
 .container {
   width: 540px;
-  background: white;
-  border-radius: 5px;
+  background: #ffcb05;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
 }
 
 .container .info-title {
-  height: 60 px;
+  height: 60px;
   width: 100%;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #ccc;
   display: flex;
   align-items: center;
-  padding: 0 35px;
+  padding: 0 20px;
   font-size: 20px;
   font-weight: 600;
+  color: #333;
 }
 
 .container .info-list {
-  padding: 15px 35px;
+  padding: 15px 20px;
 }
 
 .container .info-list .info {
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 17px;
+  color: #333;
 }
 
 .container .info-list .info span {
   font-weight: 600;
-  color: darkred;
+  color: #cc0000;
 }
 
 .container .buttons {
@@ -70,8 +73,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 35px;
-  border-top: 1px solid lightgray;
+  padding: 0 20px;
+  border-top: 1px solid #ccc;
 }
 
 .container .buttons button {
@@ -80,7 +83,7 @@ body {
   width: 100px;
   border: 1px solid transparent;
   border-radius: 5px;
-  color: green;
+  color: #fff;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -98,25 +101,52 @@ body {
 .answer {
   width: 50%;
   text-align: center;
+  padding: 10px;
+  margin: 5px;
+  background-color: #cc0000;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.result-container .complete-text,
+.result-container form {
+  margin-bottom: 20px;
+}
+
+.result-container .buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .buttons button.continue {
-  color: white;
-  background: darkgreen;
+  background-color: #cc0000;
 }
+
 .buttons button.continue:hover {
-  color: darkgreen;
-  background: lightgreen;
+  background-color: #ff0000;
 }
 
 .buttons button.quit {
-  color: darkgreen;
-  border-color: darkgreen;
+  color: #cc0000;
+  border-color: #cc0000;
 }
 
 .buttons button.quit:hover {
-  color: white;
-  background: red;
+  color: #fff;
+  background-color: #cc0000;
 }
 
 #saveScoreBtn {
@@ -128,28 +158,44 @@ body {
 }
 
 #username {
-  font-size: larger;
+  font-size: 18px;
+  padding: 5px;
 }
 
 .complete-text {
-  font-size: xx-large;
+  font-size: 36px;
+  font-weight: 600;
+  color: #cc0000;
+  margin-bottom: 20px;
 }
 
-#timer-text {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 10px;
-}
+#timer-text,
 #time-count {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   padding: 10px;
-  font-size: large;
 }
+
+#time-count {
+  font-size: 20px;
+  font-weight: 600;
+}
+
 #answers-container {
-  font-size: x-large;
+  font-size: 24px;
+}
+
+#question-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+#question-image img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
 }
