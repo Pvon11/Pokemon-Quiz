@@ -139,7 +139,6 @@ var timer = function () {
   count--;
   timeCount.textContent = count;
   if (count <= 0) {
-    // Update the condition to check if count is less than or equal to 0
     clearInterval(interval);
     alert("You're out of time!");
     endQuiz();
@@ -211,17 +210,39 @@ var startQuiz = function () {
   renderQuestions();
   interval = setInterval(timer, 1000);
 };
+function resetQuiz() {
+  clearInterval(interval);
+  questionIndex = 0;
+  count = 60;
+  questions = [];
+  timeCount.textContent = count;
+  clearPenaltyElements();
+  clearEmojiElement();
+  clearUserAnswers();
+  // Optionally, clear any data stored in the local storage related to the previous game
+}
+
+function clearPenaltyElements() {
+  var penaltyElements = document.getElementsByClassName("penalty");
+  while (penaltyElements.length > 0) {
+    penaltyElements[0].parentNode.removeChild(penaltyElements[0]);
+  }
+}
+
+function clearEmojiElement() {
+  var emojiElement = document.getElementsByClassName("emoji");
+  if (emojiElement.length > 0) {
+    emojiElement[0].parentNode.removeChild(emojiElement[0]);
+  }
+}
+
+function clearUserAnswers() {
+  // Clear any data structures or variables storing user's previous answers
+}
 
 startButton.addEventListener("click", function () {
   startButton.classList.add("hide");
   fetchQuestions();
-});
-
-continueButton.addEventListener("click", function () {
-  infoBox.classList.add("hide");
-  questionContainer.classList.remove("hide");
-  renderQuestions();
-  interval = setInterval(timer, 1000);
 });
 
 saveButton.addEventListener("click", function (event) {
@@ -229,9 +250,19 @@ saveButton.addEventListener("click", function (event) {
   localStorage.setItem(username.value, count);
 });
 
-restartButton.addEventListener("click", function () {
-  resultBox.classList.add("hide");
-  questionIndex = 0;
-  infoBox.classList.remove("hide");
-  localStorage.removeItem("whatev");
+continueButton.addEventListener("click", function () {
+  resetQuiz();
+  infoBox.classList.add("hide");
+  questionContainer.classList.remove("hide");
+  renderQuestions();
+  interval = setInterval(timer, 1000);
 });
+
+restartButton.addEventListener("click", function () {
+  resetQuiz();
+  resultBox.classList.add("hide");
+  infoBox.classList.remove("hide");
+});
+
+// Initialize the quiz
+resetQuiz();
