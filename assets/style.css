@@ -209,7 +209,7 @@ body {
   object-fit: contain;
 }
 
-@media (max-width: 414px) {
+@media (max-width: 296px) {
   .container {
     width: 90%;
   }
