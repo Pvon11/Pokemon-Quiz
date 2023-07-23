@@ -10,6 +10,11 @@ var timeCount = document.getElementById("time-count");
 var username = document.getElementById("username");
 var saveButton = document.getElementById("saveScoreBtn");
 var restartButton = document.getElementById("restart");
+var savedUsernamesContainer = document.getElementById(
+  "saved-usernames-container"
+);
+var viewSavedDataBtn = document.getElementById("viewSavedDataBtn");
+var savedUsernamesList = document.getElementById("saved-usernames-list");
 
 var questionIndex = 0;
 var count = 60;
@@ -219,7 +224,6 @@ function resetQuiz() {
   clearPenaltyElements();
   clearEmojiElement();
   clearUserAnswers();
-  // Optionally, clear any data stored in the local storage related to the previous game
 }
 
 function clearPenaltyElements() {
@@ -261,7 +265,60 @@ continueButton.addEventListener("click", function () {
 restartButton.addEventListener("click", function () {
   resetQuiz();
   resultBox.classList.add("hide");
-  infoBox.classList.remove("hide");
+  startButton.classList.remove("hide");
+});
+
+var savedUsernamesContainer = document.getElementById(
+  "saved-usernames-container"
+);
+var viewSavedDataBtn = document.getElementById("viewSavedDataBtn");
+var savedUsernamesList = document.getElementById("saved-usernames-list");
+
+saveButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  var savedUsername = username.value;
+
+  // Save the username to local storage
+  localStorage.setItem(savedUsername, count);
+
+  // Create a button to represent the saved username
+  var savedUsernameBtn = document.createElement("button");
+  savedUsernameBtn.textContent = savedUsername;
+  savedUsernameBtn.classList.add("saved-username-btn");
+
+  // Add an event listener to the saved username button
+  savedUsernameBtn.addEventListener("click", function () {
+    alert(
+      "Username: " +
+        savedUsername +
+        "\nScore: " +
+        localStorage.getItem(savedUsername)
+    );
+  });
+
+  savedUsernamesList.appendChild(savedUsernameBtn);
+});
+
+viewSavedDataBtn.addEventListener("click", function () {
+  savedUsernamesContainer.classList.toggle("show-saved-usernames");
+});
+
+window.addEventListener("load", function () {
+  var savedUsernames = Object.keys(localStorage);
+
+  savedUsernames.forEach(function (username) {
+    var savedUsernameBtn = document.createElement("button");
+    savedUsernameBtn.textContent = username;
+    savedUsernameBtn.classList.add("saved-username-btn");
+
+    savedUsernameBtn.addEventListener("click", function () {
+      alert(
+        "Username: " + username + "\nScore: " + localStorage.getItem(username)
+      );
+    });
+
+    savedUsernamesList.appendChild(savedUsernameBtn);
+  });
 });
 
 // Initialize the quiz

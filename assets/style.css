@@ -130,6 +130,9 @@ body {
 
 .result-container .complete-text,
 .result-container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -168,6 +171,9 @@ body {
 #username {
   font-size: 18px;
   padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .complete-text {
