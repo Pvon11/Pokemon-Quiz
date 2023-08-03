@@ -10,18 +10,18 @@ var timeCount = document.getElementById("time-count");
 var username = document.getElementById("username");
 var saveButton = document.getElementById("saveScoreBtn");
 var restartButton = document.getElementById("restart");
+var viewSavedDataBtn = document.getElementById("viewSavedDataBtn");
+var savedUsernamesList = document.getElementById("saved-usernames-list");
 var savedUsernamesContainer = document.getElementById(
   "saved-usernames-container"
 );
-var viewSavedDataBtn = document.getElementById("viewSavedDataBtn");
-var savedUsernamesList = document.getElementById("saved-usernames-list");
 
 var questionIndex = 0;
 var count = 60;
 var interval;
 var questions = [];
+var score = 0;
 
-// Fisher-Yates algorithm that works
 function shuffleArray(array) {
   var currentIndex = array.length;
   var temporaryValue, randomIndex;
@@ -39,7 +39,6 @@ function shuffleArray(array) {
 }
 
 var fetchQuestions = function () {
-  // limit 898 = all pokes up to Gen 1-8,
   fetch("https://pokeapi.co/api/v2/pokemon?limit=898")
     .then(function (response) {
       return response.json();
@@ -108,7 +107,6 @@ var fetchQuestions = function () {
     });
 };
 
-// Function to get unique random indexes
 function getRandomIndexes(maxIndex, count) {
   var indexes = [];
   for (var i = 0; i < count; i++) {
@@ -121,7 +119,6 @@ function getRandomIndexes(maxIndex, count) {
   return indexes;
 }
 
-// Function to get random elements from an array
 function getRandomElements(array, count) {
   var shuffled = array.slice();
   var random = [];
@@ -150,7 +147,7 @@ var timer = function () {
   }
 };
 
-var renderQuestions = function () {
+function renderQuestions() {
   if (questionIndex >= questions.length) {
     endQuiz();
     return;
@@ -179,22 +176,20 @@ var renderQuestions = function () {
       isAnswerCorrect(questions[questionIndex].correctAnswer, index);
     });
   }
-};
+}
 
-// Check if the answer is correct
 function isAnswerCorrect(correctAnswer, answer) {
   if (answer === correctAnswer) {
+    score++;
     questionIndex++;
     renderQuestions();
-    // Show thumbs up emoji for correct answer
     var emojiElement = document.createElement("span");
-    emojiElement.innerHTML = "&#128077;"; // thumbs up emoji
+    emojiElement.innerHTML = "&#128077;";
     emojiElement.classList.add("emoji");
     timeCount.insertAdjacentElement("afterend", emojiElement);
   } else {
     count -= 5;
     console.log("Wrong answer!");
-    // Show -5 for wrong answer
     var penaltyElement = document.createElement("span");
     penaltyElement.textContent = "-5";
     penaltyElement.classList.add("penalty");
@@ -202,42 +197,30 @@ function isAnswerCorrect(correctAnswer, answer) {
   }
 }
 
-var endQuiz = function () {
+function endQuiz() {
   clearInterval(interval);
   questionContainer.classList.add("hide");
   resultBox.classList.remove("hide");
-  console.log("End of quiz");
-};
+  var scoreText = document.querySelector(".score-text");
+  scoreText.textContent =
+    "Your Score: " + score + " out of " + questions.length;
+}
 
-var startQuiz = function () {
+function startQuiz() {
   infoBox.classList.add("hide");
   questionContainer.classList.remove("hide");
   renderQuestions();
   interval = setInterval(timer, 1000);
-};
+}
+
 function resetQuiz() {
   clearInterval(interval);
   questionIndex = 0;
   count = 60;
   questions = [];
+  score = 0;
   timeCount.textContent = count;
-  clearPenaltyElements();
-  clearEmojiElement();
   clearUserAnswers();
-}
-
-function clearPenaltyElements() {
-  var penaltyElements = document.getElementsByClassName("penalty");
-  while (penaltyElements.length > 0) {
-    penaltyElements[0].parentNode.removeChild(penaltyElements[0]);
-  }
-}
-
-function clearEmojiElement() {
-  var emojiElement = document.getElementsByClassName("emoji");
-  if (emojiElement.length > 0) {
-    emojiElement[0].parentNode.removeChild(emojiElement[0]);
-  }
 }
 
 function clearUserAnswers() {
@@ -251,7 +234,7 @@ startButton.addEventListener("click", function () {
 
 saveButton.addEventListener("click", function (event) {
   event.preventDefault();
-  localStorage.setItem(username.value, count);
+  localStorage.setItem(username.value, score);
 });
 
 continueButton.addEventListener("click", function () {
@@ -278,15 +261,12 @@ saveButton.addEventListener("click", function (event) {
   event.preventDefault();
   var savedUsername = username.value;
 
-  // Save the username to local storage
-  localStorage.setItem(savedUsername, count);
+  localStorage.setItem(savedUsername, score);
 
-  // Create a button to represent the saved username
   var savedUsernameBtn = document.createElement("button");
   savedUsernameBtn.textContent = savedUsername;
   savedUsernameBtn.classList.add("saved-username-btn");
 
-  // Add an event listener to the saved username button
   savedUsernameBtn.addEventListener("click", function () {
     alert(
       "Username: " +
